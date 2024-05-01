@@ -1,24 +1,7 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/01/07 23:03:39 by psegura-          #+#    #+#              #
-#    Updated: 2024/01/08 00:37:16 by psegura-         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = libasm.a
 
 SRCS = 					\
 	srcs/ft_strlen.s 	\
-	srcs/ft_strcpy.s 	\
-	srcs/ft_strcmp.s 	\
-	srcs/ft_write.s 	\
-	srcs/ft_read.s 		\
-	srcs/ft_strdup.s	\
 
 OBJS = $(SRCS:.s=.o)
 
@@ -34,12 +17,24 @@ $(NAME): $(OBJS)
 	$(NASM) $(NASMFLAGS) $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+
+test:: re
+test::
+	@echo
+	@rm -f a.out; gcc main.c $(NAME) && ./a.out
+	
 
 re:: fclean
 re:: all
 
 .PHONY: all clean fclean re
+
+# srcs/ft_strcpy.s 	\
+# srcs/ft_strcmp.s 	\
+# srcs/ft_write.s 	\
+# srcs/ft_read.s 	\
+# srcs/ft_strdup.s	\

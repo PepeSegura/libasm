@@ -1,7 +1,10 @@
 ### How to compile
 - as asem.s -o asem.o
 - gcc -o asem asem.o -nostdlib -static
-  
+
+nasm -f elf64 hello.asm -o hola.o
+ld -e _start hola.o && ./a.out
+
 ### Usefull links
 - https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
 - https://www.youtube.com/watch?v=6S5KRJv-7RU
