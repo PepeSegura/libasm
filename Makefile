@@ -25,7 +25,7 @@ fclean: clean
 test:: re
 test::
 	@echo
-	@rm -f a.out; gcc main.c $(NAME) && ./a.out
+	rm -f a.out; gcc main.c $(NAME) && ./a.out
 	
 
 re:: fclean
