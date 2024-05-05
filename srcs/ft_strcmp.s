@@ -21,8 +21,6 @@ ft_strcmp:
     .not_equal:
         sub rbx, rcx
         mov rax, rbx
-        ret
 
     .return:
         ret             ; return(rax)
-
