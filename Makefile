@@ -23,10 +23,37 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 
-test:: re
-test::
+compile = rm -f a.out; gcc -g3 -fsanitize=address,leak main.c $(NAME)
+
+strlen:: re
+strlen::
 	@echo
-	rm -f a.out; gcc main.c $(NAME) && ./a.out
+	$(compile) && ./a.out strlen
+
+strcmp:: re
+strcmp::
+	@echo
+	$(compile) && ./a.out strcmp
+
+read:: re
+read::
+	@echo
+	$(compile) && ./a.out read
+
+strcpy:: re
+strcpy::
+	@echo
+	$(compile) && ./a.out strcpy
+
+strdup:: re
+strdup::
+	@echo
+	$(compile) && ./a.out strdup
+	
+write:: re
+write::
+	@echo
+	$(compile) && ./a.out write
 	
 
 re:: fclean
