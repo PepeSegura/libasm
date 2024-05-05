@@ -10,6 +10,7 @@ typedef int (*FunctionType)(void);
 size_t  ft_strlen(const char *s);
 int     ft_strcmp(const char *s1, const char *s2);
 ssize_t ft_write(int fd, const void *buf, size_t count);
+ssize_t ft_read(int fd, void *buf, size_t count);
 
 #define TEST_STRLEN(x) printf("Text: [%-10s] STD: [%ld] ASM: [%ld]\n", x, strlen(x), ft_strlen(x))
 #define TEST_STRCMP(a, b) printf("a: [%5s] b: [%5s]  STD: [%4d] ASM: [%4d]\n", a, b, strcmp(a, b), ft_strcmp(a, b))
@@ -45,7 +46,11 @@ int test_strcmp(void)
 }
 int test_read(void)
 {
+    char buffer_std[256];
+    char buffer_asm[256];
     printf("Test read\n");
+    // printf("STD: %ld -> %s", read(42, buffer_std, 256), buffer_std);
+    printf("ASM: %ld -> %s", ft_read(42, buffer_asm, 256), buffer_asm);
     return (0);
 }
 int test_strcpy(void)
