@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 23:17:49 by psegura-          #+#    #+#             */
-/*   Updated: 2024/01/08 01:02:26 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:50:00 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <unistd.h>
 
-size_t  ft_strlen(const char *s);
+// size_t  ft_strlen(const char *s);
 
 #endif
 

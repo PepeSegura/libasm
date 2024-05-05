@@ -9,9 +9,11 @@ typedef int (*FunctionType)(void);
 
 size_t  ft_strlen(const char *s);
 int     ft_strcmp(const char *s1, const char *s2);
+ssize_t ft_write(int fd, const void *buf, size_t count);
 
 #define TEST_STRLEN(x) printf("Text: [%-10s] STD: [%ld] ASM: [%ld]\n", x, strlen(x), ft_strlen(x))
 #define TEST_STRCMP(a, b) printf("a: [%5s] b: [%5s]  STD: [%4d] ASM: [%4d]\n", a, b, strcmp(a, b), ft_strcmp(a, b))
+#define TEST_WRITE(a, b, c) printf("STD: %ld ASM: %ld\n", write(a, b, c), ft_write(a, b, c))
 
 int test_strlen(void)
 {
@@ -59,6 +61,8 @@ int test_strdup(void)
 int test_write(void)
 {
     printf("Test write\n");
+    TEST_WRITE(1, "stdout\n", 7);
+    TEST_WRITE(2, "stderr\n", 7);
     return (0);
 }
 

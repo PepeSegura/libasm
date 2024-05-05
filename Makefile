@@ -3,6 +3,7 @@ NAME = libasm.a
 SRCS = 					\
 	srcs/ft_strlen.s 	\
 	srcs/ft_strcmp.s 	\
+	srcs/ft_write.s 	\
 
 OBJS = $(SRCS:.s=.o)
 
@@ -62,6 +63,5 @@ re:: all
 .PHONY: all clean fclean re
 
 # srcs/ft_strcpy.s 	\
-# srcs/ft_write.s 	\
 # srcs/ft_read.s 	\
 # srcs/ft_strdup.s	\
