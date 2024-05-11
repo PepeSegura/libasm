@@ -5,6 +5,8 @@ SRCS = 					\
 	srcs/ft_strcmp.s 	\
 	srcs/ft_write.s 	\
 	srcs/ft_read.s 		\
+	srcs/ft_strcpy.s 	\
+	srcs/ft_strdup.s	\
 	
 
 OBJS = $(SRCS:.s=.o)
@@ -26,7 +28,7 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 
-compile = rm -f a.out; gcc -g3 -fsanitize=address,leak main.c $(NAME)
+compile = rm -f a.out; gcc -no-pie -fPIE -g3 -fsanitize=address,leak main.c $(NAME)
 
 strlen:: re
 strlen::

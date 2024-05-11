@@ -6,13 +6,16 @@ extern __errno_location
 ft_read:
     mov rax, 0
     syscall
-;     jc .error
+    test rax, rax
+    js .error
     ret
 
-; .error:
-;     mov r15, rax    ; save errno
-;     call __errno_location	   ; retrieve address to errno
-;     mov [rax], r15  ; put errno in return value of __error (pointer to errno)
-;     mov rax, -1
-;     ret
+.error:
+    neg eax                 ; convert to positive
+    mov edi, eax
+    call __errno_location   ; retrieve address to errno
+    mov [rax], edi    ; put errno in return value of __error (pointer to errno)
+    mov rax, -1
+    ret
+
 

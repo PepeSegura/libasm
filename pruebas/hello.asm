@@ -6,6 +6,13 @@
 ; R8 -> fifth argument
 ; R9 -> sixth argument
 
+; jmp -> jump always
+; jne -> jump not equal
+; js -> jump if signed if is negative
+; je -> jump equal
+; jl -> jump less
+; jg -> jump greater
+
 ; Data section: declare global vars
 section .data
 msg: DB 'Hello World!', 10
