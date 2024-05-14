@@ -1,3 +1,6 @@
+; size_t strlen(const char *s); (man 3 strlen)
+;   ◦ rdi -> const char *s
+
 global ft_strlen
 
 ft_strlen:

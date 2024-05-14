@@ -1,3 +1,8 @@
+; ssize_t read(int fd, void *buf, size_t count); (man 2 read)
+;   ◦ rdi -> int    fd
+;   ◦ rsi -> void   *buf
+;   ◦ rdx -> size_t count
+
 section .text
 
 global ft_read

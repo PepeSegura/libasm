@@ -82,6 +82,7 @@ int test_strdup(void)
     free(str_asm), free(str_std);
     return (0);
 }
+
 int test_write(void)
 {
     printf("Test write\n");
@@ -116,16 +117,13 @@ int main(int argc, char **argv)
         test_strcpy,
         test_strdup,
         test_write,
-        NULL
+        NULL,
     };
-
+        
     for (int i = 0; input[i]; i++)
     {
         if (strcmp(input[i], argv[1]) == 0)
-        {
-            functions[i]();
-            exit (0);
-        }
+            return functions[i]();
     }
     return (0);
 }

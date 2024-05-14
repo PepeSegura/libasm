@@ -59,13 +59,8 @@ write:: re
 write::
 	@echo
 	$(compile) && ./a.out write
-	
 
 re:: fclean
 re:: all
 
 .PHONY: all clean fclean re
-
-# srcs/ft_strcpy.s 	\
-# srcs/ft_read.s 	\
-# srcs/ft_strdup.s	\

@@ -1,3 +1,7 @@
+; int strcmp(const char *s1, const char *s2); (man 3 strcmp)
+;   ◦ rdi -> const char *s1
+;   ◦ rsi -> const char *s2
+
 global ft_strcmp
 
 ft_strcmp:

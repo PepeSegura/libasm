@@ -1,3 +1,7 @@
+; char *strcpy(char *dest, const char *src); (man 3 strcpy)
+;   ◦ rdi -> char       *dest
+;   ◦ rsi -> const char *src
+
 section .text
 
 global ft_strcpy

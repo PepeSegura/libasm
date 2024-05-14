@@ -1,3 +1,8 @@
+; ssize_t write(int fd, const void *buf, size_t count); (man 2 write)
+;   ◦ rdi -> int    fd
+;   ◦ rsi -> void   *buf
+;   ◦ rdx -> size_t count
+
 section .text
 
 global ft_write
