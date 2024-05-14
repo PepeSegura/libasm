@@ -9,17 +9,17 @@ global ft_read
 extern __errno_location	
 
 ft_read:
-    mov rax, 0
+    mov rax, 0              ; read() syscall number
     syscall
-    test rax, rax
-    js .error
+    test rax, rax           ; check if rax is negative
+    js .error               ; jump if negative
     ret
 
 .error:
     neg eax                 ; convert to positive
-    mov edi, eax
+    mov edi, eax            ; mov rax to an aux register
     call __errno_location   ; retrieve address to errno
-    mov [rax], edi    ; put errno in return value of __error (pointer to errno)
+    mov [rax], edi          ; put errno in return value of __error (pointer to errno)
     mov rax, -1
     ret
 

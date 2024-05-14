@@ -9,8 +9,7 @@ global ft_write
 extern __errno_location
 
 ft_write:
-
-    mov rax, 1
+    mov rax, 1              ; write() syscall number
     syscall
     test rax, rax
     js .error
