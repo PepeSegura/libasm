@@ -9,12 +9,22 @@ extern malloc
 extern ft_strcpy
 
 ft_strdup:
+    .prologe:
+        push r15
+
     call ft_strlen
     mov r15, rdi
     mov rdi, rax
     inc rdi
-    call malloc ; check NULL
+    call malloc
+    cmp rax , 0
+    je .return
     mov rdi, rax
     mov rsi, r15
     call ft_strcpy
-    ret
+
+    .epiloge:
+        pop r15
+
+    .return:
+        ret

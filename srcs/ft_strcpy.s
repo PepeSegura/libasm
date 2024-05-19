@@ -7,7 +7,12 @@ section .text
 global ft_strcpy
 
 ft_strcpy:
-    xor rax, rax
+    .prologe:
+        push r15
+
+    .init_vars:
+        xor rax, rax
+
     .loop:
         cmp byte [rsi+rax], 0
         je .return
@@ -19,8 +24,8 @@ ft_strcpy:
         inc rax
         jmp .loop
 
-
     .return:
+        pop r15
         mov byte [rdi+rax], 0
         mov rax, rdi
         ret

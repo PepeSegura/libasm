@@ -5,6 +5,8 @@
 global ft_strcmp
 
 ft_strcmp:
+    .prologe:
+        push rbx
 
     .init_vars:
         xor rax, rax
@@ -27,4 +29,5 @@ ft_strcmp:
         mov rax, rbx
 
     .return:
+        pop rbx
         ret             ; return(rax)
