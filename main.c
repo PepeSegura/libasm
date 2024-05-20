@@ -1,10 +1,6 @@
 // #include "inc/libasm.h"
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
+
+#include "inc/libasm.h"
 
 typedef int (*FunctionType)(void);
 
@@ -14,7 +10,7 @@ ssize_t ft_write(int fd, const void *buf, size_t count);
 ssize_t ft_read(int fd, void *buf, size_t count);
 char    *ft_strcpy(char *dst, const char *src);
 char    *ft_strdup(const char *s);
-int ft_atoi_base(char *str, char *base);
+int     ft_atoi_base(char *str, char *base);
 
 #define TEST_STRLEN(x) printf("Text: [%-10s] STD: [%ld] ASM: [%ld]\n", x, strlen(x), ft_strlen(x))
 #define TEST_STRCMP(a, b) printf("a: [%5s] b: [%5s]  STD: [%4d] ASM: [%4d]\n", a, b, strcmp(a, b), ft_strcmp(a, b))
@@ -94,6 +90,66 @@ int test_write(void)
     return (0);
 }
 
+int test_atoi(void)
+{
+    char *inputs[] = {
+        "acb",
+        "acb",
+        "acb",
+        "acb",
+        "acb",
+        "10",
+        "0",
+        "-2147483648",
+        "ABC",
+        NULL,
+    };
+
+    char *bases[] = {
+        "",
+        "1",
+        "+abc",
+        "-abc",
+        "aabc",
+        "abcdefg",
+        "0123456789",
+        "0123456789acdef",
+        "0123456789ABCDEF",
+        NULL,
+    };
+
+    int i = -1;
+    int result = 0;
+
+    while (inputs[++i])
+    {
+        printf("Trying to convert: [%s] with base: [%s]\n", inputs[i], bases[i]);
+        result = ft_atoi_base(inputs[i], bases[i]);
+        if (result == 0)
+            printf("   Potential error with the base: [%s] atoi_result = [%d]\n", bases[i], result);
+        else
+            printf("   Atoi_result: [%d]\n", result);
+        printf("\n");
+    }
+    return (0);
+}
+
+int test_isspace(void)
+{
+    int i = 7;
+
+    while (++i < 14)
+        printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
+    i = 32;
+    printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
+    i = 47;
+    while (++i < 60)
+        printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
+    
+    printf("is [%d] - [%c] a space: [%d]\n", '\t', '\t', ft_isspace('\t'));
+    return (0);
+}
+
 int main(int argc, char **argv)
 {
     if (argc != 2)
@@ -108,6 +164,8 @@ int main(int argc, char **argv)
         "strcpy",
         "strdup",
         "write",
+        "isspace",
+        "atoi",
         NULL,
     };
 
@@ -118,6 +176,8 @@ int main(int argc, char **argv)
         test_strcpy,
         test_strdup,
         test_write,
+        test_isspace,
+        test_atoi,
         NULL,
     };
         

@@ -7,6 +7,8 @@ SRCS = 					\
 	srcs/ft_read.s 		\
 	srcs/ft_strcpy.s 	\
 	srcs/ft_strdup.s	\
+	srcs_aux/ft_isspace.s \
+	srcs_bonus/atoi_base/ft_atoi_base.s \
 	
 
 OBJS = $(SRCS:.s=.o)
@@ -59,6 +61,16 @@ write:: re
 write::
 	@echo
 	$(compile) && ./a.out write
+
+isspace:: re
+isspace::
+	@echo
+	$(compile) && ./a.out isspace
+
+atoi:: re
+atoi::
+	@echo
+	$(compile) && ./a.out atoi
 
 re:: fclean
 re:: all
