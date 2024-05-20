@@ -7,17 +7,17 @@ global ft_isspace
 
 ft_isspace:
     mov rax, 1
-    cmp byte rdi, 8     ; '\b'
+    cmp rdi, 8  ; '\b'
     je .true
-    cmp byte rdi, 9     ; '\t'
+    cmp rdi, 9  ; '\t'
     je .true
-    cmp byte rdi, 10    ; '\n'
+    cmp rdi, 10 ; '\n'
     je .true
-    cmp byte rdi, 11    ; '\v'
+    cmp rdi, 11 ; '\v'
     je .true
-    cmp byte rdi, 12    ; '\f'
+    cmp rdi, 12 ; '\f'
     je .true
-    cmp byte rdi, 32    ; ' '
+    cmp rdi, 32 ; ' '
     je .true
     mov rax, 0
 

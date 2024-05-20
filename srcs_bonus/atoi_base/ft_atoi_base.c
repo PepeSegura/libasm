@@ -9,9 +9,9 @@ int check_base(char *str)
 
     while (str[i])
     {
-        j = i + 1;
         if (str[i] == '+' || str[i] == '-' || isspace(str[i]))
             return (1);
+        j = i + 1;
         while (str[j])
         {
             if (str[i] == str[j])
