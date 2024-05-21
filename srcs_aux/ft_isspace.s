@@ -19,6 +19,10 @@ ft_isspace:
     je .true
     cmp rdi, 32 ; ' '
     je .true
+    cmp rdi, 43 ; '+'
+    je .true
+    cmp rdi, 45 ; '-'
+    je .true
     mov rax, 0
 
     .true:

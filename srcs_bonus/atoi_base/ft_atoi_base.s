@@ -17,6 +17,12 @@ check_base:
         inc r14
         cmp byte [rsi+r14], 0
         je .return
+        jmp .check_invalid_chars
+        .continue:
+        cmp byte [rsi+r14], 43 ; '+'
+        je .error
+        cmp byte [rsi+r14], 45 ; '+'
+        je .error
         mov r15, r14    ; j = i
         inc r15         ; j = j + 1
         .inner_loop:
@@ -38,6 +44,25 @@ check_base:
     .error:
         mov rax, -1
         jmp .return
+
+    .check_invalid_chars:
+        cmp rdi, 8  ; '\b'
+        je .error
+        cmp rdi, 9  ; '\t'
+        je .error
+        cmp rdi, 10 ; '\n'
+        je .error
+        cmp rdi, 11 ; '\v'
+        je .error
+        cmp rdi, 12 ; '\f'
+        je .error
+        cmp rdi, 32 ; ' '
+        je .error
+        cmp rdi, 43 ; '+'
+        je .error
+        cmp rdi, 45 ; '-'
+        je .error
+        jmp .continue
 
 ; int     ft_atoi_base(char *str, char *base); (C Piscine C 04 : ex05)
 ;   ◦ rdi -> char   *str
