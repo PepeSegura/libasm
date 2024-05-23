@@ -108,7 +108,7 @@ int test_atoi(void)
     char *bases[] = {
         "",
         "1",
-        "+abc",
+        "ab\tc",
         "-abc",
         "aabc",
         "abcdefg",

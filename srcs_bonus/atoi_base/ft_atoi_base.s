@@ -19,10 +19,6 @@ check_base:
         je .return
         jmp .check_invalid_chars
         .continue:
-        cmp byte [rsi+r14], 43 ; '+'
-        je .error
-        cmp byte [rsi+r14], 45 ; '+'
-        je .error
         mov r15, r14    ; j = i
         inc r15         ; j = j + 1
         .inner_loop:
@@ -35,34 +31,35 @@ check_base:
             inc r15
             jmp .inner_loop
 
+    .error:
+        mov rax, -1
+        jmp .return
+
     .return:
         pop rbx
         pop r15
         pop r14
         ret
 
-    .error:
-        mov rax, -1
-        jmp .return
-
     .check_invalid_chars:
-        cmp rdi, 8  ; '\b'
+        cmp byte [rsi+r14], 8  ; '\b'
         je .error
-        cmp rdi, 9  ; '\t'
+        cmp byte [rsi+r14], 9  ; '\t'
         je .error
-        cmp rdi, 10 ; '\n'
+        cmp byte [rsi+r14], 10 ; '\n'
         je .error
-        cmp rdi, 11 ; '\v'
+        cmp byte [rsi+r14], 11 ; '\v'
         je .error
-        cmp rdi, 12 ; '\f'
+        cmp byte [rsi+r14], 12 ; '\f'
         je .error
-        cmp rdi, 32 ; ' '
+        cmp byte [rsi+r14], 32 ; ' '
         je .error
-        cmp rdi, 43 ; '+'
+        cmp byte [rsi+r14], 43 ; '+'
         je .error
-        cmp rdi, 45 ; '-'
+        cmp byte [rsi+r14], 45 ; '-'
         je .error
         jmp .continue
+
 
 ; int     ft_atoi_base(char *str, char *base); (C Piscine C 04 : ex05)
 ;   ◦ rdi -> char   *str
@@ -71,17 +68,38 @@ check_base:
 global ft_atoi_base
 section .text
 extern ft_strlen
+extern ft_isspace
 
 ft_atoi_base:
+
     .init_vars:
         mov rax, 0  ; change to xor rax, rax
+        mov rdx, -1
     
     call check_base
-    ; ret
     test rax, rax   ; check if rax is negative and set rax to 0
     js .error
-    mov rax, 42
-    ret
+    ; ret
+
+    .skip_spaces:
+        xor rax, rax
+        inc rdx
+        cmp byte [rdi+rdx], 0
+        je .check_symbol
+        call ft_isspace
+        cmp rax, 1
+        je .skip_spaces
+
+    .check_symbol:
+        cmp byte [rdi+rdx], 45 ; '-'
+        je .found_minus
+        cmp byte [rdi+rdx], 43 ; '+'
+        je .found_plus
+    
+    .found_minus:
+        mov var, -1
+    .found_plus:
+        inc rdx
 
     .error:
         mov rax, 0  ; set rax to 0 if there was any errors
