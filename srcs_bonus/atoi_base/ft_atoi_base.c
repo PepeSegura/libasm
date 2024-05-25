@@ -25,7 +25,6 @@ int check_base(char *str)
 
 int ft_atoi_base(char *str, char *base)
 {
-    (void)base;
     int i = 0;
     int sign = 1;
     int total = 0;

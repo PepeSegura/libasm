@@ -13,6 +13,13 @@
 ; jl -> jump less
 ; jg -> jump greater
 
+; rsp -> stack pointer -> inicio memoria
+; rbp -> base pointer -> fin memoria
+
+; word  -> 2 bites
+; qword -> 8 bites
+; dword -> 4 bites
+
 ; Data section: declare global vars
 section .data
 msg: DB 'Hello World!', 10

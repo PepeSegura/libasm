@@ -72,7 +72,16 @@ extern ft_isspace
 
 ft_atoi_base:
 
+    .prologe:
+        push rbp        ; save old base pointer
+        mov rbp, rsp    ; set new base pointer to the current stack pointer
+        sub rsp, 40     ; Allocate 40 bytes for local variables
+
     .init_vars:
+        mov dword [rsp - 4], 0  ; int i = 0 used to move the string
+        mov dword [rsp - 8], 0  ; int total = 0 -> return (sign * total)
+        mov dword [rsp - 12], 1 ; int sign = 0 -> return (sign * total)
+        mov dword [rsp - 12], 1 ; int len_base = 0 -> total = total * len_base;
         mov rax, 0  ; change to xor rax, rax
         mov rdx, -1
     
@@ -97,10 +106,13 @@ ft_atoi_base:
         je .found_plus
     
     .found_minus:
-        mov var, -1
+        mov dword [rbp-4], -1
     .found_plus:
         inc rdx
 
     .error:
         mov rax, 0  ; set rax to 0 if there was any errors
+        jmp .return
+
+    .return:
         ret
