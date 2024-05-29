@@ -78,41 +78,49 @@ ft_atoi_base:
         sub rsp, 40     ; Allocate 40 bytes for local variables
 
     .init_vars:
-        mov dword [rsp - 4], 0  ; int i = 0 used to move the string
-        mov dword [rsp - 8], 0  ; int total = 0 -> return (sign * total)
-        mov dword [rsp - 12], 1 ; int sign = 0 -> return (sign * total)
-        mov dword [rsp - 12], 1 ; int len_base = 0 -> total = total * len_base;
-        mov rax, 0  ; change to xor rax, rax
+        ; mov dword [rsp - 4], 0  ; int i = 0 used to move the string
+        ; mov dword [rsp - 8], 0  ; int total = 0 -> return (sign * total)
+        ; mov dword [rsp - 12], 1 ; int sign = 0 -> return (sign * total)
+        ; mov dword [rsp - 16], 1 ; int len_base = 0 -> total = total * len_base;
+        mov rax, 0              ; change to xor rax, rax
         mov rdx, -1
     
     call check_base
     test rax, rax   ; check if rax is negative and set rax to 0
     js .error
-    ; ret
 
     .skip_spaces:
-        xor rax, rax
+        xor rax, rax        ; rax used to check return from isspace
         inc rdx
         cmp byte [rdi+rdx], 0
-        je .check_symbol
+        je .return          ; return if everything is space
         call ft_isspace
-        cmp rax, 1
+        cmp rax, 1          ; check if [rdi+rdx] isspace
         je .skip_spaces
+        jmp .check_symbol   ; if not space go to next (can remove it)
 
     .check_symbol:
         cmp byte [rdi+rdx], 45 ; '-'
         je .found_minus
         cmp byte [rdi+rdx], 43 ; '+'
         je .found_plus
+        jmp .final_loop
     
     .found_minus:
-        mov dword [rbp-4], -1
+        mov dword [rsp - 4], -1   ; set sign to negative
     .found_plus:
         inc rdx
+
+    .final_loop:
+        ; TODO
+        jmp .return
 
     .error:
         mov rax, 0  ; set rax to 0 if there was any errors
         jmp .return
 
     .return:
+        mov rsp, rbp
+        pop rbp
+        ; add rsp, 40
         ret
