@@ -10,8 +10,8 @@ check_base:
 
     .init_vars:
         xor rax, rax
-        mov r14, -1    ; i = 0
-        xor r15, r15    ; j = i
+        mov r14, -1    ; i = -1
+        xor r15, r15    ; j = 0
     
     .outer_loop:
         inc r14
@@ -108,6 +108,7 @@ ft_atoi_base:
     
     .found_minus:
         mov dword [rsp - 4], -1   ; set sign to negative
+
     .found_plus:
         inc rdx
 

@@ -1,24 +1,19 @@
-// #include "inc/libasm.h"
-
 #include "inc/libasm.h"
-
-typedef int (*FunctionType)(void);
-
-size_t  ft_strlen(const char *s);
-int     ft_strcmp(const char *s1, const char *s2);
-ssize_t ft_write(int fd, const void *buf, size_t count);
-ssize_t ft_read(int fd, void *buf, size_t count);
-char    *ft_strcpy(char *dst, const char *src);
-char    *ft_strdup(const char *s);
-int     ft_atoi_base(char *str, char *base);
 
 #define TEST_STRLEN(x) printf("Text: [%-10s] STD: [%ld] ASM: [%ld]\n", x, strlen(x), ft_strlen(x))
 #define TEST_STRCMP(a, b) printf("a: [%5s] b: [%5s]  STD: [%4d] ASM: [%4d]\n", a, b, strcmp(a, b), ft_strcmp(a, b))
 #define TEST_WRITE(a, b, c) printf("STD: %ld ASM: %ld\n", write(a, b, c), ft_write(a, b, c))
 
+#define UNDERLINE "\033[4m"
+#define RESET "\033[0m"
+
+#define PRINT_UNDERLINE(STR) printf("\n" UNDERLINE "     " STR "     " RESET "\n")
+
+jmp_buf jump_buffer;
+
 int test_strlen(void)
 {
-    printf("Test strlen\n");
+    PRINT_UNDERLINE("TEST STRLEN");
 
     TEST_STRLEN("");
     TEST_STRLEN("1");
@@ -34,7 +29,7 @@ int test_strlen(void)
 }
 int test_strcmp(void)
 {
-    printf("Test strcmp\n");
+    PRINT_UNDERLINE("TEST STRCM");
 
     TEST_STRCMP("A", "A");
     TEST_STRCMP("a", "A");
@@ -46,43 +41,69 @@ int test_strcmp(void)
 }
 int test_read(void)
 {
+    PRINT_UNDERLINE("TEST READ");
+
     static char buffer_std[256];
     static char buffer_asm[256];
-    printf("Test read\n");
-    printf("STD: %ld -> %s\n", read(-1, buffer_std, 256), buffer_std);
+    printf("STD: %ld -> [%s]\n", read(-1, buffer_std, 256), buffer_std);
     perror("STD");
     printf("erno: %d\n", errno);
     errno = 0;
-    printf("ASM: %ld -> %s\n", ft_read(-1, buffer_asm, 256), buffer_asm);
+    printf("ASM: %ld -> [%s]\n", ft_read(-1, buffer_asm, 256), buffer_asm);
     perror("ASM");
     printf("erno: %d\n", errno);
     return (0);
 }
 int test_strcpy(void)
 {
+    PRINT_UNDERLINE("TEST STRCPY");
+
     char dest_std[256];
     char dest_asm[256];
-    printf("Test strcpy\n");
     printf("ASM: B: %p A: %p\n", dest_asm, ft_strcpy(dest_asm, "hola asm"));
     printf("STD: B: %p A: %p\n", dest_std, strcpy(dest_std, "hola std"));
-    printf("ASM: %s\nSTD: %s\n", dest_asm, dest_std);
+    printf("ASM: [%s]\nSTD: [%s]\n", dest_asm, dest_std);
     return (0);
 }
 
 int test_strdup(void)
 {
-    printf("Test strdup\n");
-    char *str_asm = ft_strdup("Hola asm");
-    char *str_std = strdup("Hola std");
-    printf("ASM: %s\n", str_asm);
-    printf("STD: %s\n", str_std);
-    free(str_asm), free(str_std);
+    PRINT_UNDERLINE("TEST STRDUP");
+
+    {
+        char *input = "Hola";
+        printf("Duplicating text: [%s]\n", input);
+        char *str_asm = ft_strdup(input);
+        char *str_std = strdup(input);
+        printf("ASM: [%s]\n", str_asm);
+        printf("STD: [%s]\n", str_std);
+        free(str_asm), free(str_std);
+    }
+    {
+        char *input = "";
+        printf("Duplicating text: [%s]\n", input);
+        char *str_asm = ft_strdup(input);
+        char *str_std = strdup(input);
+        printf("ASM: [%s]\n", str_asm);
+        printf("STD: [%s]\n", str_std);
+        free(str_asm), free(str_std);
+    }
+    {
+        char *input = NULL;
+        printf("Duplicating text: [%s]\n", input);
+        if (setjmp(jump_buffer) == 0)
+        {
+            char *str_asm = ft_strdup(input);
+            free(str_asm);
+        }
+    }
     return (0);
 }
 
 int test_write(void)
 {
-    printf("Test write\n");
+    PRINT_UNDERLINE("TEST WRITE");
+
     TEST_WRITE(1, "stdout\n", 7);
     TEST_WRITE(2, "stderr\n", 7);
     TEST_WRITE(-1, "stderr\n", 7);
@@ -92,6 +113,8 @@ int test_write(void)
 
 int test_atoi(void)
 {
+    PRINT_UNDERLINE("TEST ATOI");
+
     char *inputs[] = {
         "acb",
         "acb",
@@ -123,10 +146,10 @@ int test_atoi(void)
 
     while (inputs[++i])
     {
-        printf("Trying to convert: [%s] with base: [%s]\n", inputs[i], bases[i]);
+        printf("Trying to convert: [[%s]] with base: [[%s]]\n", inputs[i], bases[i]);
         result = ft_atoi_base(inputs[i], bases[i]);
         if (result == 0)
-            printf("   Potential error with the base: [%s] atoi_result = [%d]\n", bases[i], result);
+            printf("   Potential error with the base: [[%s]] atoi_result = [%d]\n", bases[i], result);
         else
             printf("   Atoi_result: [%d]\n", result);
         printf("\n");
@@ -136,6 +159,8 @@ int test_atoi(void)
 
 int test_isspace(void)
 {
+    PRINT_UNDERLINE("TEST ISSPACE");
+
     int i = 7;
 
     while (++i < 14)
@@ -150,41 +175,36 @@ int test_isspace(void)
     return (0);
 }
 
+void sigsegv_handler(int signal)
+{
+    printf("Caught segmentation fault (signal %d).\n", signal);
+    longjmp(jump_buffer, 1);
+}
+
 int main(int argc, char **argv)
 {
-    if (argc != 2)
-    {
-        dprintf(2, "Invalid number of arguments\n");
-        return (1);
-    }
-    const char *input[] = {
-        "strlen",
-        "strcmp",
-        "read",
-        "strcpy",
-        "strdup",
-        "write",
-        "isspace",
-        "atoi",
-        NULL,
-    };
+    signal(SIGSEGV, sigsegv_handler);
 
-    const FunctionType functions[] = {
-        test_strlen,
-        test_strcmp,
-        test_read,
-        test_strcpy,
-        test_strdup,
-        test_write,
-        test_isspace,
-        test_atoi,
-        NULL,
-    };
-        
-    for (int i = 0; input[i]; i++)
-    {
-        if (strcmp(input[i], argv[1]) == 0)
-            return functions[i]();
-    }
-    return (0);
+    
+    #if defined(STRLEN) || defined(TEST)
+        test_strlen();
+    #endif
+    #if defined(READ) || defined(TEST)
+        test_read();
+    #endif
+    #if defined(STRCPY) || defined(TEST)
+        test_strcpy();
+    #endif
+    #if defined(STRDUP) || defined(TEST)
+        test_strdup();
+    #endif
+    #if defined(WRITE) || defined(TEST)
+        test_write();
+    #endif
+    #if defined(ISSPACE) || defined(TEST)
+        test_isspace();
+    #endif
+    #if defined(ATOI) || defined(TEST)
+        test_atoi();
+    #endif
 }

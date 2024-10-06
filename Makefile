@@ -28,49 +28,41 @@ clean:
 	@rm -f $(OBJS)
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) test
 
-compile = rm -f a.out; gcc -no-pie -fPIE -g3 -fsanitize=address,leak main.c $(NAME)
+# Compile test with a given macro
+define compile_test
+	@echo
+	@rm -f test
+	@gcc -no-pie -fPIE -g3 -fsanitize=address,leak main.c $(NAME) -o test -D $1 && ./test
+endef
+
+test:: re
+	$(call compile_test, TEST)
 
 strlen:: re
-strlen::
-	@echo
-	$(compile) && ./a.out strlen
+	$(call compile_test, STRLEN)
 
 strcmp:: re
-strcmp::
-	@echo
-	$(compile) && ./a.out strcmp
+	$(call compile_test, STRCMP)
 
 read:: re
-read::
-	@echo
-	$(compile) && ./a.out read
+	$(call compile_test, READ)
 
 strcpy:: re
-strcpy::
-	@echo
-	$(compile) && ./a.out strcpy
+	$(call compile_test, STRCPY)
 
 strdup:: re
-strdup::
-	@echo
-	$(compile) && ./a.out strdup
-	
+	$(call compile_test, STRDUP)
+
 write:: re
-write::
-	@echo
-	$(compile) && ./a.out write
+	$(call compile_test, WRITE)
 
 isspace:: re
-isspace::
-	@echo
-	$(compile) && ./a.out isspace
+	$(call compile_test, ISSPACE)
 
 atoi:: re
-atoi::
-	@echo
-	$(compile) && ./a.out atoi
+	$(call compile_test, ATOI)
 
 re:: fclean
 re:: all

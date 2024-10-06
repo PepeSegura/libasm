@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libasm.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psegura- <psegura-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 23:17:49 by psegura-          #+#    #+#             */
-/*   Updated: 2024/05/05 17:50:00 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/10/06 22:38:34 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <string.h>
 # include <stdlib.h>
 # include <errno.h>
+# include <signal.h>
+# include <setjmp.h>
 
 /* Mandatory part */
 size_t  ft_strlen(const char *s);
