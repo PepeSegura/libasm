@@ -30,9 +30,7 @@ clean:
 fclean: clean
 	@rm -f $(NAME) test
 
-# Compile test with a given macro
 define compile_test
-	@echo
 	@rm -f test
 	@gcc -no-pie -fPIE -g3 -fsanitize=address,leak main.c $(NAME) -o test -D $1 && ./test
 endef

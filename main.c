@@ -11,6 +11,7 @@
 
 jmp_buf jump_buffer;
 
+#if defined(STRLEN) || defined(TEST)
 int test_strlen(void)
 {
     PRINT_UNDERLINE("TEST STRLEN");
@@ -27,6 +28,9 @@ int test_strlen(void)
     TEST_STRLEN("999999999");
     return (0);
 }
+#endif
+
+#if defined(STRCMP) || defined(TEST)
 int test_strcmp(void)
 {
     PRINT_UNDERLINE("TEST STRCM");
@@ -39,6 +43,9 @@ int test_strcmp(void)
     TEST_STRCMP("AAA", "B");
     return (0);
 }
+#endif
+
+#if defined(READ) || defined(TEST)
 int test_read(void)
 {
     PRINT_UNDERLINE("TEST READ");
@@ -54,6 +61,9 @@ int test_read(void)
     printf("erno: %d\n", errno);
     return (0);
 }
+#endif
+
+#if defined(STRCPY) || defined(TEST)
 int test_strcpy(void)
 {
     PRINT_UNDERLINE("TEST STRCPY");
@@ -65,7 +75,9 @@ int test_strcpy(void)
     printf("ASM: [%s]\nSTD: [%s]\n", dest_asm, dest_std);
     return (0);
 }
+#endif
 
+#if defined(STRDUP) || defined(TEST)
 int test_strdup(void)
 {
     PRINT_UNDERLINE("TEST STRDUP");
@@ -99,7 +111,9 @@ int test_strdup(void)
     }
     return (0);
 }
+#endif
 
+#if defined(WRITE) || defined(TEST)
 int test_write(void)
 {
     PRINT_UNDERLINE("TEST WRITE");
@@ -110,7 +124,29 @@ int test_write(void)
     perror("write");
     return (0);
 }
+#endif
 
+#if defined(ISSPACE) || defined(TEST)
+int test_isspace(void)
+{
+    PRINT_UNDERLINE("TEST ISSPACE");
+
+    int i = 7;
+
+    while (++i < 14)
+        printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
+    i = 32;
+    printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
+    i = 47;
+    while (++i < 60)
+        printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
+
+    printf("is [%d] - [%c] a space: [%d]\n", '\t', '\t', ft_isspace('\t'));
+    return (0);
+}
+#endif
+
+#if defined(ATOI) || defined(TEST)
 int test_atoi(void)
 {
     PRINT_UNDERLINE("TEST ATOI");
@@ -156,24 +192,7 @@ int test_atoi(void)
     }
     return (0);
 }
-
-int test_isspace(void)
-{
-    PRINT_UNDERLINE("TEST ISSPACE");
-
-    int i = 7;
-
-    while (++i < 14)
-        printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
-    i = 32;
-    printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
-    i = 47;
-    while (++i < 60)
-        printf("is [%d] - [%c] a space: [%d]\n", i, i, ft_isspace(i));
-    
-    printf("is [%d] - [%c] a space: [%d]\n", '\t', '\t', ft_isspace('\t'));
-    return (0);
-}
+#endif
 
 void sigsegv_handler(int signal)
 {
@@ -185,9 +204,11 @@ int main(int argc, char **argv)
 {
     signal(SIGSEGV, sigsegv_handler);
 
-    
     #if defined(STRLEN) || defined(TEST)
         test_strlen();
+    #endif
+    #if defined(STRCMP) || defined(TEST)
+        test_strcmp();
     #endif
     #if defined(READ) || defined(TEST)
         test_read();
