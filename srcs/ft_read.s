@@ -16,10 +16,10 @@ ft_read:
     ret
 
 .error:
-    neg eax                 ; convert to positive
-    mov edi, eax            ; mov rax to an aux register
-    call __errno_location   ; retrieve address to errno
-    mov [rax], edi          ; put errno in return value of __error (pointer to errno)
+    neg eax                           ; convert to positive
+    mov edi, eax                      ; mov rax to an aux register
+    call __errno_location wrt ..plt   ; retrieve address to errno
+    mov [rax], edi                    ; put errno in return value of __error (pointer to errno)
     mov rax, -1
     ret
 

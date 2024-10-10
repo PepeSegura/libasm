@@ -32,7 +32,7 @@ fclean: clean
 
 define compile_test
 	@rm -f test
-	@gcc -no-pie -fPIE -g3 -fsanitize=address,leak main.c $(NAME) -o test -D $1 && ./test
+	@gcc main.c $(NAME) -o test -D $1 && ./test
 endef
 
 test:: re
